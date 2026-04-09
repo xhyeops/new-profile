@@ -1,0 +1,22 @@
+{
+  "name": "New Profile",
+  "about_url": "https://github.com/xhyeops/new-profile",
+  "license_url": "https://github.com//xhyeops/new-profile/blob/main/LICENSE",
+  "component": false,
+  "minimum_discourse_version": "2.7.0",
+  "assets": {},
+  "color_schemes": {
+    "Tema Escuro Elegante": {
+      "primary": "e4e4e7",
+      "secondary": "18181b",
+      "tertiary": "22d3ee",
+      "quaternary": "f472b6",
+      "header_background": "0f0f14",
+      "header_primary": "e4e4e7",
+      "highlight": "22d3ee",
+      "danger": "ef4444",
+      "success": "22c55e",
+      "love": "f472b6"
+    }
+  }
+}
