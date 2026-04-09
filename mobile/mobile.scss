@@ -1,0 +1,111 @@
+// Estilos especificos para mobile
+@import "../scss/variables";
+
+.user-main {
+  border-radius: 0;
+  margin: 0;
+}
+
+.user-profile-primary {
+  min-height: 120px;
+}
+
+.user-profile-avatar {
+  margin-top: -40px;
+  
+  img.avatar {
+    width: 80px !important;
+    height: 80px !important;
+  }
+  
+  &::before {
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+  }
+  
+  &::after {
+    width: 16px;
+    height: 16px;
+    bottom: 4px;
+    right: 4px;
+  }
+}
+
+.user-profile-names {
+  padding: 12px 16px;
+  
+  .user-profile-name {
+    font-size: 1.25rem;
+  }
+  
+  .user-profile-username {
+    font-size: 0.875rem;
+  }
+}
+
+.user-navigation {
+  padding: 0 12px;
+  overflow-x: auto;
+  
+  .nav-pills {
+    flex-wrap: nowrap;
+    
+    > li > a {
+      padding: 10px 14px;
+      font-size: 0.875rem;
+      white-space: nowrap;
+    }
+  }
+}
+
+.stats-section,
+.badge-section,
+.bio-section,
+.top-section {
+  padding: 16px;
+}
+
+.user-stats {
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.user-stat {
+  padding: 12px;
+  min-width: auto;
+  
+  .value {
+    font-size: 1.125rem;
+  }
+  
+  .label {
+    font-size: 0.625rem;
+  }
+}
+
+.top-section {
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.user-profile-controls {
+  padding: 12px 16px;
+  
+  .btn {
+    padding: 8px 16px;
+    font-size: 0.875rem;
+  }
+}
+
+// Desabilita animacoes para melhor performance
+@media (prefers-reduced-motion: reduce) {
+  .user-profile-avatar::before {
+    animation: none;
+  }
+  
+  .vip-badge {
+    animation: none;
+  }
+}
