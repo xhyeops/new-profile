@@ -1,7 +1,5 @@
-// Estilos especificos para desktop
-@import "../scss/variables";
 
-// Layout mais espacçso no desktop
+
 .user-main {
   max-width: 1000px;
   margin: 24px auto;
@@ -18,12 +16,10 @@
   }
 }
 
-// Grid de estatisticas otimizado
 .user-stats {
   grid-template-columns: repeat(4, 1fr);
 }
 
-// Hover effects mais elaborados no desktop
 .user-stat:hover {
   transform: translateY(-6px) scale(1.02);
 }
