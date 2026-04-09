@@ -1,6 +1,3 @@
-// Estilos especificos para mobile
-@import "../scss/variables";
-
 .user-main {
   border-radius: 0;
   margin: 0;
@@ -99,7 +96,6 @@
   }
 }
 
-// Desabilita animacoes para melhor performance
 @media (prefers-reduced-motion: reduce) {
   .user-profile-avatar::before {
     animation: none;
