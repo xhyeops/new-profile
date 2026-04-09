@@ -1,678 +1,454 @@
 // ============================================
-// VARIAVEIS CSS - DEFINA SUAS CORES AQUI
+// COMPONENTE: Perfil Aprimorado para Discourse
 // ============================================
+// Este e um COMPONENTE de tema, nao um tema completo.
+// Adicione ao seu tema existente em:
+// Admin > Personalizar > Temas > Componentes
+
+// ------------------------------------
+// VARIAVEIS - Edite as cores aqui
+// ------------------------------------
 :root {
-  // Cores principais
-  --profile-primary: #22d3ee;
-  --profile-accent: #f472b6;
-  --profile-success: #22c55e;
-  --profile-warning: #f59e0b;
-  
-  // Fundos
-  --profile-bg: #0f1419;
-  --profile-card-bg: #16202a;
-  --profile-border: #2d3741;
-  
-  // Textos
-  --profile-text: #f1f5f9;
-  --profile-text-muted: #8899a6;
-  
-  // Gradientes
-  --gradient-banner: linear-gradient(135deg, #0f1419 0%, #1a2a3a 50%, #0f1419 100%);
-  --gradient-primary: linear-gradient(135deg, #22d3ee, #06b6d4);
-  --gradient-avatar-border: linear-gradient(135deg, #22d3ee, #f472b6, #22d3ee);
-  
-  // Sombras
-  --shadow-glow-primary: 0 0 20px rgba(34, 211, 238, 0.3);
-  
-  // Tamanhos
-  --border-radius-sm: 6px;
-  --border-radius-md: 10px;
-  --border-radius-lg: 16px;
-  --border-radius-full: 9999px;
-  
-  // Transicoes
-  --transition-fast: 0.15s ease;
-  --transition-normal: 0.3s ease;
+  --perfil-primaria: #22d3ee;
+  --perfil-accent: #f472b6;
+  --perfil-sucesso: #22c55e;
+  --perfil-card-bg: rgba(34, 211, 238, 0.08);
+  --perfil-card-borda: rgba(34, 211, 238, 0.25);
+  --perfil-texto: #e2e8f0;
+  --perfil-texto-muted: #94a3b8;
 }
 
-// ============================================
-// PERFIL DO USUARIO - REDESIGN COMPLETO
-// ============================================
+// ------------------------------------
+// ANIMACAO DA BORDA DO AVATAR
+// ------------------------------------
+@keyframes rodarBorda {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 
-// Container principal do perfil
+@keyframes pulsar {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+// ------------------------------------
+// CONTAINER DO PERFIL
+// ------------------------------------
 .user-main {
-  background: var(--profile-bg);
-  border-radius: var(--border-radius-lg);
-  overflow: hidden;
-  border: 1px solid var(--profile-border);
+  .about {
+    // Banner sutil no topo
+    &.collapsed-info {
+      position: relative;
+      
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 100px;
+        background: linear-gradient(
+          135deg,
+          rgba(34, 211, 238, 0.1) 0%,
+          rgba(244, 114, 182, 0.05) 50%,
+          transparent 100%
+        );
+        border-radius: 12px 12px 0 0;
+        pointer-events: none;
+        z-index: 0;
+      }
+    }
+  }
 }
 
-// ============================================
-// BANNER / CAPA DO PERFIL
-// ============================================
-.user-profile-primary {
+// ------------------------------------
+// AVATAR COM BORDA ANIMADA
+// ------------------------------------
+.user-main .user-profile-avatar {
   position: relative;
-  background: var(--gradient-banner);
-  min-height: 180px;
-  padding: 0;
   
+  .avatar {
+    position: relative;
+    z-index: 2;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    background: 
+      linear-gradient(var(--secondary), var(--secondary)) padding-box,
+      linear-gradient(135deg, var(--perfil-primaria), var(--perfil-accent), var(--perfil-primaria)) border-box;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(34, 211, 238, 0.4);
+    }
+  }
+  
+  // Anel animado ao redor do avatar
   &::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: 
-      radial-gradient(circle at 20% 50%, rgba(34, 211, 238, 0.1) 0%, transparent 50%),
-      radial-gradient(circle at 80% 50%, rgba(244, 114, 182, 0.1) 0%, transparent 50%);
-    pointer-events: none;
+    top: -6px;
+    left: -6px;
+    right: -6px;
+    bottom: -6px;
+    border-radius: 50%;
+    background: conic-gradient(
+      from 0deg,
+      var(--perfil-primaria),
+      var(--perfil-accent),
+      var(--perfil-primaria)
+    );
+    animation: rodarBorda 4s linear infinite;
+    z-index: 1;
+    opacity: 0.6;
   }
   
   &::after {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--profile-primary), transparent);
-  }
-}
-
-.user-card-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  
-  .card-background-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0.6;
-  }
-}
-
-// ============================================
-// AVATAR COM BORDA ANIMADA
-// ============================================
-.user-profile-avatar {
-  position: relative;
-  z-index: 10;
-  margin-top: -60px;
-  margin-left: 24px;
-  
-  .avatar-wrapper {
-    position: relative;
-    display: inline-block;
-  }
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: -4px;
-    left: -4px;
-    right: -4px;
-    bottom: -4px;
-    background: var(--gradient-avatar-border);
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
     border-radius: 50%;
-    animation: rotate-border 3s linear infinite;
-    z-index: -1;
-  }
-  
-  img.avatar {
-    width: 120px !important;
-    height: 120px !important;
-    border-radius: 50%;
-    border: 4px solid var(--profile-card-bg);
-    box-shadow: var(--shadow-glow-primary);
-    transition: transform var(--transition-normal);
-    
-    &:hover {
-      transform: scale(1.05);
-    }
+    background: var(--secondary);
+    z-index: 1;
   }
 }
 
-@keyframes rotate-border {
-  0% {
-    filter: hue-rotate(0deg);
-  }
-  100% {
-    filter: hue-rotate(360deg);
-  }
-}
-
-.user-profile-avatar::after {
-  content: '';
-  position: absolute;
-  bottom: 8px;
-  right: 8px;
-  width: 20px;
-  height: 20px;
-  background: var(--profile-success);
-  border: 3px solid var(--profile-card-bg);
-  border-radius: 50%;
-  box-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
-}
-
-// ============================================
-// INFORMACOES DO USUARIO
-// ============================================
-.user-profile-names {
-  padding: 16px 24px;
-  
-  .user-profile-name {
-    font-size: 1.75rem;
+// ------------------------------------
+// NOME DO USUARIO
+// ------------------------------------
+.user-main .user-profile-names {
+  .username {
+    font-size: 1.6rem;
     font-weight: 700;
-    color: var(--profile-text);
-    margin-bottom: 4px;
-    background: linear-gradient(135deg, var(--profile-text), var(--profile-primary));
+    background: linear-gradient(135deg, var(--perfil-primaria), var(--perfil-accent));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
   
-  .user-profile-username {
+  .full-name {
+    color: var(--perfil-texto-muted);
     font-size: 1rem;
-    color: var(--profile-text-muted);
-    
-    &::before {
-      content: '@';
-      color: var(--profile-primary);
-    }
   }
 }
 
-.user-profile-primary-info {
-  .trust-level {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 12px;
-    background: rgba(34, 211, 238, 0.1);
-    border: 1px solid rgba(34, 211, 238, 0.3);
-    border-radius: var(--border-radius-full);
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--profile-primary);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-}
-
-// ============================================
-// BOTOES DE ACAO
-// ============================================
-.user-profile-controls {
-  display: flex;
-  gap: 12px;
-  padding: 16px 24px;
-  
-  .btn {
-    padding: 10px 20px;
-    border-radius: var(--border-radius-md);
-    font-weight: 600;
-    transition: all var(--transition-normal);
-    border: none;
-    cursor: pointer;
-  }
-  
-  .btn-primary {
-    background: var(--gradient-primary);
-    color: var(--profile-bg);
-    box-shadow: var(--shadow-glow-primary);
-    
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 30px rgba(34, 211, 238, 0.5);
-    }
-  }
-  
-  .btn-default {
-    background: var(--profile-card-bg);
-    color: var(--profile-text);
-    border: 1px solid var(--profile-border);
-    
-    &:hover {
-      background: var(--profile-border);
-      border-color: var(--profile-primary);
-    }
-  }
-}
-
-// ============================================
-// ABAS DE NAVEGACAO
-// ============================================
-.user-navigation {
-  border-bottom: 1px solid var(--profile-border);
-  padding: 0 24px;
-  
-  .nav-pills {
-    display: flex;
-    gap: 4px;
-    
-    > li {
-      > a {
-        padding: 12px 20px;
-        color: var(--profile-text-muted);
-        font-weight: 500;
-        border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
-        transition: all var(--transition-fast);
-        position: relative;
-        
-        &:hover {
-          color: var(--profile-text);
-          background: rgba(255, 255, 255, 0.05);
-        }
-        
-        &.active {
-          color: var(--profile-primary);
-          background: transparent;
-          
-          &::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--gradient-primary);
-            border-radius: 2px 2px 0 0;
-          }
-        }
-      }
-    }
-  }
-}
-
-// ============================================
+// ------------------------------------
 // CARDS DE ESTATISTICAS
-// ============================================
-.stats-section {
-  padding: 24px;
-  
-  h3 {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--profile-text-muted);
+// ------------------------------------
+.user-main .stats-section {
+  .stats-title {
     text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 16px;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    color: var(--perfil-texto-muted);
+    margin-bottom: 1rem;
+    text-align: center;
   }
 }
 
-.user-stat {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 16px 20px;
-  background: var(--profile-card-bg);
-  border: 1px solid var(--profile-border);
-  border-radius: var(--border-radius-md);
-  margin: 4px;
-  min-width: 100px;
-  transition: all var(--transition-normal);
+.user-main .user-stat {
+  background: var(--perfil-card-bg);
+  border: 1px solid var(--perfil-card-borda);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--perfil-primaria), var(--perfil-accent));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
   
   &:hover {
-    transform: translateY(-4px);
-    border-color: var(--profile-primary);
-    box-shadow: var(--shadow-glow-primary);
+    transform: translateY(-3px);
+    border-color: var(--perfil-primaria);
+    box-shadow: 0 8px 25px rgba(34, 211, 238, 0.15);
+    
+    &::before {
+      opacity: 1;
+    }
   }
   
   .value {
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--profile-primary);
-    line-height: 1;
+    color: var(--perfil-primaria);
+    display: block;
+    line-height: 1.2;
   }
   
   .label {
-    font-size: 0.75rem;
-    color: var(--profile-text-muted);
-    margin-top: 4px;
+    font-size: 0.7rem;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
+    color: var(--perfil-texto-muted);
+    margin-top: 0.25rem;
   }
 }
 
-.user-stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  gap: 12px;
+// Cores especiais para likes
+.user-main .user-stat.likes-given .value,
+.user-main .user-stat[title*="dado"] .value {
+  color: var(--perfil-accent);
 }
 
-// ============================================
-// SECAO DE CONQUISTAS / EMBLEMAS
-// ============================================
-.badge-section,
-.user-badges {
-  padding: 24px;
-  
-  .badge-card {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
-    background: var(--profile-card-bg);
-    border: 1px solid var(--profile-border);
-    border-radius: var(--border-radius-full);
-    margin: 4px;
-    transition: all var(--transition-normal);
-    
-    &:hover {
-      transform: scale(1.05);
+.user-main .user-stat.likes-received .value,
+.user-main .user-stat[title*="recebido"] .value {
+  color: var(--perfil-accent);
+}
+
+// ------------------------------------
+// SECAO DE ESTATISTICAS - GRID
+// ------------------------------------
+.user-main .top-section {
+  .stats-section {
+    ul {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 0.75rem;
+      list-style: none;
+      padding: 0;
+      margin: 0;
     }
     
-    &.badge-type-gold,
-    &[data-badge-type="gold"] {
-      border-color: #f59e0b;
-      background: rgba(245, 158, 11, 0.1);
-      box-shadow: 0 0 15px rgba(245, 158, 11, 0.2);
-      
-      .badge-icon {
-        color: #f59e0b;
-      }
-    }
-    
-    &.badge-type-silver,
-    &[data-badge-type="silver"] {
-      border-color: #a1a1aa;
-      background: rgba(161, 161, 170, 0.1);
-    }
-    
-    &.badge-type-bronze,
-    &[data-badge-type="bronze"] {
-      border-color: #cd7f32;
-      background: rgba(205, 127, 50, 0.1);
-    }
-    
-    .badge-icon {
-      font-size: 1.25rem;
-    }
-    
-    .badge-display-name {
-      font-weight: 600;
-      color: var(--profile-text);
-      font-size: 0.875rem;
+    li {
+      margin: 0;
     }
   }
 }
 
-// ============================================
-// HEATMAP DE ATIVIDADE
-// ============================================
-.activity-heatmap {
-  padding: 24px;
+// ------------------------------------
+// ABAS DE NAVEGACAO
+// ------------------------------------
+.user-main .user-navigation {
+  border-bottom: 1px solid var(--perfil-card-borda);
+  margin-bottom: 1.5rem;
   
-  .heatmap-grid {
-    display: grid;
-    grid-template-columns: repeat(52, 1fr);
-    gap: 2px;
-  }
-  
-  .heatmap-cell {
-    width: 10px;
-    height: 10px;
-    border-radius: 2px;
-    background: var(--profile-border);
-    transition: all var(--transition-fast);
+  .nav-pills {
+    gap: 0.5rem;
     
-    &:hover {
-      transform: scale(1.5);
-    }
-    
-    &.level-1 { background: rgba(34, 211, 238, 0.2); }
-    &.level-2 { background: rgba(34, 211, 238, 0.4); }
-    &.level-3 { background: rgba(34, 211, 238, 0.6); }
-    &.level-4 { background: rgba(34, 211, 238, 0.8); }
-    &.level-5 { background: var(--profile-primary); }
-  }
-  
-  .heatmap-legend {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 12px;
-    font-size: 0.75rem;
-    color: var(--profile-text-muted);
-  }
-}
-
-// ============================================
-// LISTA DE POSTS / TOPICOS
-// ============================================
-.user-stream {
-  .item {
-    padding: 16px 24px;
-    border-bottom: 1px solid var(--profile-border);
-    transition: background var(--transition-fast);
-    
-    &:hover {
-      background: rgba(255, 255, 255, 0.02);
-    }
-    
-    .title {
-      color: var(--profile-text);
-      font-weight: 500;
+    > li > a {
+      border-radius: 8px 8px 0 0;
+      padding: 0.75rem 1.25rem;
+      color: var(--perfil-texto-muted);
+      border: 1px solid transparent;
+      border-bottom: none;
+      transition: all 0.2s ease;
       
       &:hover {
-        color: var(--profile-primary);
+        color: var(--perfil-primaria);
+        background: var(--perfil-card-bg);
+      }
+      
+      &.active {
+        color: var(--perfil-primaria);
+        background: var(--perfil-card-bg);
+        border-color: var(--perfil-card-borda);
+        
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: -1px;
+          left: 0;
+          right: 0;
+          height: 2px;
+          background: var(--perfil-primaria);
+        }
       }
     }
+  }
+}
+
+// ------------------------------------
+// EMBLEMAS / BADGES
+// ------------------------------------
+.user-main .badge-card {
+  background: var(--perfil-card-bg);
+  border: 1px solid var(--perfil-card-borda);
+  border-radius: 12px;
+  padding: 1rem;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+    border-color: var(--perfil-primaria);
+    box-shadow: 0 5px 20px rgba(34, 211, 238, 0.1);
+  }
+  
+  // Badge raro - dourado
+  &.badge-type-gold {
+    border-color: rgba(251, 191, 36, 0.4);
+    background: rgba(251, 191, 36, 0.08);
     
-    .time {
-      font-size: 0.75rem;
-      color: var(--profile-text-muted);
+    &:hover {
+      border-color: #fbbf24;
+      box-shadow: 0 5px 20px rgba(251, 191, 36, 0.2);
     }
   }
-}
-
-// ============================================
-// SECAO SOBRE MIM / BIO
-// ============================================
-.bio-section,
-.user-profile-bio {
-  padding: 24px;
   
-  .bio-content {
-    color: var(--profile-text);
-    line-height: 1.6;
-    padding: 16px;
-    background: var(--profile-card-bg);
-    border-radius: var(--border-radius-md);
-    border-left: 3px solid var(--profile-primary);
+  // Badge prata
+  &.badge-type-silver {
+    border-color: rgba(148, 163, 184, 0.4);
+    background: rgba(148, 163, 184, 0.08);
+  }
+  
+  // Badge bronze
+  &.badge-type-bronze {
+    border-color: rgba(180, 83, 9, 0.4);
+    background: rgba(180, 83, 9, 0.08);
   }
 }
 
-.interest-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 16px;
-  
-  .tag {
-    padding: 6px 14px;
-    background: rgba(34, 211, 238, 0.1);
-    border: 1px solid rgba(34, 211, 238, 0.2);
-    border-radius: var(--border-radius-full);
+// ------------------------------------
+// MELHORES TOPICOS E RESPOSTAS
+// ------------------------------------
+.user-main .top-topic-list,
+.user-main .top-post-list {
+  .title {
+    text-transform: uppercase;
     font-size: 0.75rem;
-    font-weight: 500;
-    color: var(--profile-primary);
-    transition: all var(--transition-fast);
+    letter-spacing: 2px;
+    color: var(--perfil-texto-muted);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--perfil-card-borda);
+  }
+  
+  .topic-info,
+  .post-info {
+    padding: 0.75rem;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    transition: all 0.2s ease;
     
     &:hover {
-      background: rgba(34, 211, 238, 0.2);
-      border-color: var(--profile-primary);
+      background: var(--perfil-card-bg);
+    }
+    
+    a {
+      color: var(--perfil-texto);
+      
+      &:hover {
+        color: var(--perfil-primaria);
+      }
+    }
+  }
+  
+  .like-count {
+    color: var(--perfil-accent);
+    font-weight: 600;
+    
+    .d-icon {
+      color: var(--perfil-accent);
     }
   }
 }
 
-// ============================================
-// REDES SOCIAIS
-// ============================================
-.user-profile-links {
-  display: flex;
-  gap: 12px;
-  padding: 0 24px 24px;
-  
-  a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    background: var(--profile-card-bg);
-    border: 1px solid var(--profile-border);
-    border-radius: var(--border-radius-md);
-    color: var(--profile-text-muted);
-    transition: all var(--transition-normal);
+// ------------------------------------
+// BOTOES DO PERFIL
+// ------------------------------------
+.user-main {
+  .btn-primary {
+    background: linear-gradient(135deg, var(--perfil-primaria), #06b6d4);
+    border: none;
+    border-radius: 8px;
+    padding: 0.6rem 1.25rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
     
     &:hover {
-      color: var(--profile-primary);
-      border-color: var(--profile-primary);
       transform: translateY(-2px);
-      box-shadow: var(--shadow-glow-primary);
+      box-shadow: 0 5px 20px rgba(34, 211, 238, 0.3);
+    }
+  }
+  
+  .btn-default {
+    background: var(--perfil-card-bg);
+    border: 1px solid var(--perfil-card-borda);
+    border-radius: 8px;
+    color: var(--perfil-texto);
+    
+    &:hover {
+      border-color: var(--perfil-primaria);
+      color: var(--perfil-primaria);
     }
   }
 }
 
-// ============================================
-// MELHORES RESPOSTAS / TOPICOS
-// ============================================
-.top-section {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  padding: 24px;
-  
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
-  
-  .top-card {
-    background: var(--profile-card-bg);
-    border: 1px solid var(--profile-border);
-    border-radius: var(--border-radius-md);
-    overflow: hidden;
-    
-    h4 {
-      padding: 12px 16px;
-      background: rgba(255, 255, 255, 0.02);
-      border-bottom: 1px solid var(--profile-border);
-      font-size: 0.875rem;
-      font-weight: 600;
-      color: var(--profile-text);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    
-    .top-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 16px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      transition: background var(--transition-fast);
-      
-      &:last-child {
-        border-bottom: none;
-      }
-      
-      &:hover {
-        background: rgba(34, 211, 238, 0.05);
-      }
-      
-      .likes {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        font-size: 0.75rem;
-        color: var(--profile-accent);
-        min-width: 50px;
-        
-        .heart-icon {
-          color: var(--profile-accent);
-        }
-      }
-      
-      .topic-title {
-        color: var(--profile-text);
-        font-size: 0.875rem;
-        
-        &:hover {
-          color: var(--profile-primary);
-        }
-      }
-    }
+// ------------------------------------
+// INDICADOR ONLINE
+// ------------------------------------
+.user-main .user-profile-avatar {
+  .avatar-flair {
+    border: 2px solid var(--secondary);
   }
 }
 
-// ============================================
-// BADGE VIP / ESPECIAL
-// ============================================
-.vip-badge {
+// Ponto verde de online (se existir)
+.user-main .online-status {
   position: absolute;
-  top: -8px;
-  right: -8px;
-  background: linear-gradient(135deg, #f59e0b, #fbbf24);
-  color: #000;
-  padding: 4px 8px;
-  border-radius: var(--border-radius-full);
-  font-size: 0.625rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  box-shadow: 0 0 15px rgba(245, 158, 11, 0.5);
-  animation: pulse-glow 2s ease-in-out infinite;
+  bottom: 5px;
+  right: 5px;
+  width: 16px;
+  height: 16px;
+  background: var(--perfil-sucesso);
+  border: 3px solid var(--secondary);
+  border-radius: 50%;
+  z-index: 10;
+  animation: pulsar 2s ease-in-out infinite;
 }
 
-@keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 0 0 15px rgba(245, 158, 11, 0.5);
-  }
-  50% {
-    box-shadow: 0 0 25px rgba(245, 158, 11, 0.8);
-  }
-}
-
-// ============================================
+// ------------------------------------
 // RESPONSIVO
-// ============================================
+// ------------------------------------
 @media (max-width: 768px) {
-  .user-profile-avatar {
-    margin-left: 50%;
-    transform: translateX(-50%);
-    margin-top: -50px;
-    
-    img.avatar {
-      width: 100px !important;
-      height: 100px !important;
+  .user-main .top-section {
+    .stats-section ul {
+      grid-template-columns: repeat(2, 1fr);
     }
   }
   
-  .user-profile-names {
-    text-align: center;
-    
-    .user-profile-name {
-      font-size: 1.5rem;
-    }
-  }
-  
-  .user-profile-controls {
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  
-  .user-stat {
-    min-width: 80px;
-    padding: 12px 14px;
+  .user-main .user-stat {
+    padding: 0.75rem 1rem;
     
     .value {
       font-size: 1.25rem;
+    }
+  }
+  
+  .user-main .user-profile-names .username {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .user-main .top-section {
+    .stats-section ul {
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+    }
+  }
+  
+  .user-main .user-stat {
+    padding: 0.6rem 0.75rem;
+    
+    .value {
+      font-size: 1.1rem;
+    }
+    
+    .label {
+      font-size: 0.6rem;
     }
   }
 }
